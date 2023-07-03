@@ -9,10 +9,12 @@ import {
   Button,
   Pressable,
   ScrollView,
+  Alert,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Note from "./Note";
 import Modal from "./Modal";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Home = () => {
   const [madal, madalF] = React.useState(true);
@@ -30,8 +32,30 @@ const Home = () => {
   const [mode, modeF] = React.useState(true);
 
   const [note, noteF] = React.useState("");
-  const [noteAll, noteAllF] = React.useState([]);
+  const [noteAll, noteAllF] = useState([]);
   const numberOfWords = 200;
+
+  console.log(noteAll, "noteAll");
+
+  // FUCNTION TO GET SAVED DATA TO REACT ASYNC STORAGE
+
+  const getDataFromAsyncStorage = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem("notes");
+
+      const parsedData = jsonValue ? JSON.parse(jsonValue) : [];
+      noteAllF(parsedData);
+      console.log("Array of objects retrieved:", parsedData);
+    } catch (error) {
+      console.error("Error retrieving array of objects:", error);
+    }
+  };
+
+  useEffect(() => {
+    getDataFromAsyncStorage();
+  }, []);
+
+  console.log(noteAll);
 
   function submitToState(e) {
     if (numberOfWords - e.length >= 0) {
@@ -39,29 +63,47 @@ const Home = () => {
     }
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (note.trim().length > 0) {
-      const newNote = [
-        ...noteAll,
-        { date: new Date().toLocaleDateString(), text: note },
-      ];
+      const nNote = { date: new Date().toLocaleDateString(), text: note };
 
+      const newNote = [...noteAll, nNote];
       noteAllF(newNote);
 
+      // SAVE DATA TO REACT ASYNC STORAGE
+
+      SaveToAsyncStorage(newNote);
+
       noteF("");
+    }
+  };
+
+  // FUCNTION TO SAVE DATA TO REACT ASYNC STORAGE
+
+  const SaveToAsyncStorage = async (value) => {
+    const jsonValue = JSON.stringify(value);
+
+    try {
+      await AsyncStorage.setItem("notes", jsonValue);
+      Alert.alert("Note Saved");
+    } catch (error) {
+      console.error("Error saving array of objects:", error);
     }
   };
 
   function handleDelete(id) {
     const newNote = noteAll.filter((note, index) => index !== id);
     noteAllF(newNote);
+
+    // FUCNTION TO DELETE DATA TO REACT ASYNC STORAGE
+    SaveToAsyncStorage(newNote);
   }
 
   function handleMode() {
     modeF(!mode);
   }
 
-  const noteElements = noteAll.map((note, index) => (
+  const noteElements = noteAll?.map((note, index) => (
     <Note
       key={index}
       id={index}
@@ -72,7 +114,7 @@ const Home = () => {
   ));
 
   return (
-    <View
+    <SafeAreaView
       style={[
         styles.container,
         {
@@ -87,7 +129,7 @@ const Home = () => {
           <View
             style={[
               styles.header,
-              { backgroundColor: mode ? "blue" : "rgb(34, 38, 44)" },
+              { backgroundColor: mode ? "#2684fc" : "rgb(34, 38, 44)" },
             ]}
           >
             <View style={styles.headerItem}>
@@ -135,7 +177,7 @@ const Home = () => {
           </ScrollView>
         </View>
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -144,7 +186,7 @@ export default Home;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     // backgroundColor: "rgb(240, 248, 255)",
   },
 
