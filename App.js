@@ -1,20 +1,24 @@
 import { StyleSheet, Text, View, StatusBar } from "react-native";
-import Home from "./NoteApp/Home";
+// import Home from "./NoteApp/Home";
+import { NavigationContainer } from "@react-navigation/native";
+import Navigations from "./src/Function/Navigations";
+import { AppProvider } from "./src/Function/Context";
+import { ModalPortal } from "react-native-modals";
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Home />
-      <StatusBar style="auto" />
-    </View>
+    <AppProvider>
+      <NavigationContainer style={styles.container}>
+        <Navigations />
+        <ModalPortal />
+        <StatusBar style="auto" />
+      </NavigationContainer>
+    </AppProvider>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: "#fff",
-    // alignItems: "center",
-    // justifyContent: "center",
   },
 });

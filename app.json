@@ -5,31 +5,35 @@
     "version": "1.0.0",
     "owner": "ibrahimdevv",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/spal.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/spal.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/spal.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.ibrahimdevv.NoteApp"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/spal.png"
     },
-    "description": ""
+    "description": "",
+    "extra": {
+      "eas": {
+        "projectId": "06676b34-c4b7-4b46-ab4e-2187ee52bccb"
+      }
+    }
   }
 }
