@@ -11,7 +11,7 @@ export default function App() {
       <NavigationContainer style={styles.container}>
         <Navigations />
         <ModalPortal />
-        <StatusBar style="auto" />
+        <StatusBar backgroundColor="#000000" barStyle="light-content" />
       </NavigationContainer>
     </AppProvider>
   );
