@@ -265,7 +265,6 @@ const Notes = ({ route, navigation }) => {
                 buttonStyle={{
                   backgroundColor: bgColor,
                   width: 120,
-
                   height: 40,
                 }}
                 buttonTextStyle={{ fontSize: 14, color: "#00000096" }}
